@@ -1,47 +1,53 @@
-from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
+import sys
+import traceback
 import os
 import joblib
 import numpy as np
 from datetime import datetime
 
-from backend import models, schemas, auth
-from backend.database import engine, get_db
+print("🔄 Iniciando el arranque de Uvicorn y cargando módulos...")
 
-app = FastAPI(title="AI Business Intelligence API")
-
-# Inicialización Robusta de DB
 try:
+    from backend import models, schemas, auth
+    from backend.database import engine, get_db
+
+    # Inicialización Robusta de DB
     models.Base.metadata.create_all(bind=engine)
-    print("✅ Base de datos conectada e inicializada correctamente.")
-except Exception as e:
-    import sys
-    print(f"❌ ERROR FATAL AL CONECTAR LA BASE DE DATOS: {str(e)}")
-    sys.exit(1)
+    print("✅ Base de datos PostgreSQL conectada e inicializada correctamente.")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    # Inicializamos la App
+    from fastapi import FastAPI, Depends, HTTPException, status
+    from fastapi.middleware.cors import CORSMiddleware
+    
+    app = FastAPI(title="AI Business Intelligence API - Debug Mode")
 
-@app.get("/")
-def home():
-    return {"status": "ok", "message": "AI Business Intelligence API is Live"}
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODELS_DIR = os.path.join(BASE_DIR, "ml_models")
+    @app.get("/")
+    def home():
+        return {"status": "ok", "message": "AI Business Intelligence API is Live"}
 
-try:
+    # Rutas Dinámicas de ML
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    MODELS_DIR = os.path.join(BASE_DIR, "ml_models")
+    print(f"🔍 Buscando modelos en: {MODELS_DIR}")
+
     sales_model = joblib.load(os.path.join(MODELS_DIR, "sales_model.pkl"))
     churn_model = joblib.load(os.path.join(MODELS_DIR, "churn_model.pkl"))
     kmeans_model = joblib.load(os.path.join(MODELS_DIR, "kmeans_model.pkl"))
     print("🤖 Modelos ML cargados exitosamente.")
-except FileNotFoundError:
-    print("⚠️ ADVERTENCIA: Modelos no encontrados. Ejecuta ml_pipeline.py primero.")
+
+except Exception as e:
+    print("❌================ ERROR CRITICO DE INICIO ================❌")
+    print(traceback.format_exc())
+    print("❌=======================================================❌")
+    sys.exit(1)
 
 @app.post("/register", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
