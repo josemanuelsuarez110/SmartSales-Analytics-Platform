@@ -6,8 +6,8 @@ import joblib
 import numpy as np
 from datetime import datetime
 
-import models, schemas, auth
-from database import engine, get_db
+from . import models, schemas, auth
+from .database import engine, get_db
 
 # Create DB Tables
 models.Base.metadata.create_all(bind=engine)
