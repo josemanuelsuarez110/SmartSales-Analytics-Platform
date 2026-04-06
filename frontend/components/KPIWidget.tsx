@@ -1,4 +1,19 @@
-export default function KPIWidget({ title, value, unit = '', trend = null, icon = null }) {
+import React from 'react';
+
+interface TrendProps {
+  type: 'up' | 'down';
+  value: number;
+}
+
+interface KPIProps {
+  title: string;
+  value: string | number;
+  unit?: string;
+  trend?: TrendProps | null;
+  icon?: React.ReactNode;
+}
+
+export default function KPIWidget({ title, value, unit = '', trend = null, icon = null }: KPIProps) {
   return (
     <div className="glass-card">
       <div className="flex justify-between items-start mb-4">

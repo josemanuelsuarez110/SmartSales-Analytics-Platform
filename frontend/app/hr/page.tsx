@@ -1,6 +1,6 @@
 "use client"
 import KPIWidget from "@/components/KPIWidget";
-import { UserCheck, Clock, BookOpen, Search } from 'lucide-react';
+import { UserCheck, Clock, BookOpen, Search, TrendingUp } from 'lucide-react';
 
 export default function HRDashboard() {
   return (
@@ -29,6 +29,7 @@ export default function HRDashboard() {
           title="Performance" 
           value="4.1" 
           unit="/5" 
+          trend={{ type: 'up', value: 0.5 }}
           icon={<TrendingUp size={20} />} 
         />
         <KPIWidget 
@@ -67,5 +68,3 @@ export default function HRDashboard() {
     </div>
   );
 }
-
-import { TrendingUp } from 'lucide-react';
