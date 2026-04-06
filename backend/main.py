@@ -6,13 +6,19 @@ import joblib
 import numpy as np
 from datetime import datetime
 
-from . import models, schemas, auth
-from .database import engine, get_db
-
-# Create DB Tables
-models.Base.metadata.create_all(bind=engine)
+from backend import models, schemas, auth
+from backend.database import engine, get_db
 
 app = FastAPI(title="AI Business Intelligence API")
+
+# Inicialización Robusta de DB
+try:
+    models.Base.metadata.create_all(bind=engine)
+    print("✅ Base de datos conectada e inicializada correctamente.")
+except Exception as e:
+    import sys
+    print(f"❌ ERROR FATAL AL CONECTAR LA BASE DE DATOS: {str(e)}")
+    sys.exit(1)
 
 app.add_middleware(
     CORSMiddleware,
