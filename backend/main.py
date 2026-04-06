@@ -18,6 +18,7 @@ try:
     # Inicializamos la App
     from fastapi import FastAPI, Depends, HTTPException, status
     from fastapi.middleware.cors import CORSMiddleware
+    from sqlalchemy.orm import Session
     
     app = FastAPI(title="AI Business Intelligence API - Debug Mode")
 
