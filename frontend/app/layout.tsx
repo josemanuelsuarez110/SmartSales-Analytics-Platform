@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
+
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "SmartSales Analytics | Pulse Platform",
@@ -19,13 +20,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body>
-        <div className="flex bg-slate-950 min-h-screen">
-          <Sidebar />
-          <main className="flex-1 ml-64 p-8">
-            {children}
-          </main>
-        </div>
+      <body className="bg-[#0a0a0a] min-h-screen">
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );

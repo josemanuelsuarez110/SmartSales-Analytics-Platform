@@ -26,8 +26,8 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-4 text-white font-sans">
-            <div className="max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl animate-in fade-in duration-700">
+        <div className="login-layout min-h-screen flex items-center justify-center bg-[#0a0a0a] p-4 text-white font-sans">
+            <div className="login-card max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl animate-in fade-in duration-700">
                 <div className="text-center mb-8">
                     <div className="inline-flex p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 mb-4">
                         <Lock className="text-emerald-400" size={32} />
